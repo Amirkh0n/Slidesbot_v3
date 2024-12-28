@@ -1,0 +1,31 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}Chats{% endblock %}
+
+{% block content %}
+   <div class="chat-area">
+    {% for user in users %}
+    <div class="msg online" onclick="window.location.href='users/{{ user.user_id }}'">
+        <img class="msg-profile" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" alt="User profile" />
+        <div class="msg-detail">
+            <div class="msg-username">{{ user.first_name }}</div>
+            <div class="msg-content">
+                <span class="msg-message">{{ user.messages.all.last.message_text|slice:":20" }}</span>
+                <span class="msg-date">
+                    {% if user.messages.all.last.created_at|date:"Y-m-d" == now|date:"Y-m-d" %}
+                        Bugun {{ user.messages.all.last.created_at|date:"H:i" }}
+                    {% elif user.messages.all.last.created_at|date:"W" == now|date:"W" %}
+                        {{ user.messages.all.last.created_at|date:"l" }}
+                    {% elif user.messages.all.last.created_at|date:"Y-m" == now|date:"Y-m" %}
+                        {{ user.messages.all.last.created_at|date:"j-F H:i" }}
+                    {% else %}
+                        {{ user.messages.all.last.created_at|date:"W" }}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
