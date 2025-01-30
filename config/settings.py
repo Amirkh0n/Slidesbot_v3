@@ -30,7 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 #Bot token 
-TOKEN = ""
+TOKEN = "5769873334:AAGw7FA6vmxhcwvjPboDFHIaC1CjF99jGlw"
+
+Web = "https://amirxon521.pythonanywhere.com"
 
 #STEPS (BOT)
 STEPS = {

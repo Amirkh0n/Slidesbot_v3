@@ -1,33 +1,18 @@
 from django.conf import settings
-from telegram.ext import (
-    Updater, 
-    CommandHandler, 
-    MessageHandler, 
-    Filters, 
-    CallbackQueryHandler
-)
+from telegram import Bot
+from telegram.ext import Dispatcher, CommandHandler, MessageHandler, CallbackQueryHandler, Filters
 from bot import commands as comm, messages as msg, inlines as inl
 
-updater=Updater(token=settings.TOKEN)
-bot = updater.bot
+bot = Bot(token=settings.TOKEN)
+dispatcher = Dispatcher(bot, update_queue=None, workers=0)
 
-def main():
-    
-    dp=updater.dispatcher
-    dp.add_handler(CommandHandler('start', comm.start_command))
-    dp.add_handler(CommandHandler('cancel', comm.cancel_command))
-    
-    dp.add_handler(MessageHandler(Filters.text, msg.handle_messages))
-    dp.add_handler(MessageHandler(Filters.contact, msg.contact_handler))
-    dp.add_handler(MessageHandler(Filters.photo, msg.photo_handler ))
-    dp.add_handler(MessageHandler(Filters.document, msg.file_handler))
-    
-    dp.add_handler(CallbackQueryHandler(inl.inline_button_handler))
-    
-    updater.start_polling()
-    print("""\t★★★Running bot!!!★★★
-》》》to stop -> CTRL + C《《《
-""")
-    updater.idle()
-    print('\t•••STOPPED!!!•••')
+# Handlerlarni qo‘shamiz
+dispatcher.add_handler(CommandHandler('start', comm.start_command))
+dispatcher.add_handler(CommandHandler('cancel', comm.cancel_command))
 
+dispatcher.add_handler(MessageHandler(Filters.text, msg.handle_messages))
+dispatcher.add_handler(MessageHandler(Filters.contact, msg.contact_handler))
+dispatcher.add_handler(MessageHandler(Filters.photo, msg.photo_handler))
+dispatcher.add_handler(MessageHandler(Filters.document, msg.file_handler))
+
+dispatcher.add_handler(CallbackQueryHandler(inl.inline_button_handler))
