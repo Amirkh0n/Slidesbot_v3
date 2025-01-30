@@ -1,0 +1,96 @@
+{% extends 'dashboard/base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+          <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--success">
+                  <a href="{% url 'homepage' %}" style="color: black;"><div class="card-inner">
+                    <h5 class="card-title">Barcha foydalanuvchilar:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ all_users|intcomma }} nafar</h5>
+                    <p class="tx-12 text-muted">All users</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">account_circle</i>
+                    </div>
+                  </div></a>
+                </div>
+              </div>
+            
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--danger">
+                 <a href="{% url 'homepage' %}?is_active=1" style="color: black;">
+                  <div class="card-inner">
+                    <h5 class="card-title">Aktiv foydalanuvchilar:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ active_users|intcomma }} nafar</h5>
+                    <p class="tx-12 text-muted">Active users</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">person</i>
+                    </div>
+                  </div></a>
+                </div>
+              </div>
+              
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--primary">
+                  <div class="card-inner">
+                    <h5 class="card-title">Umumiy daromad:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ income|intcomma}} so`m</h5>
+                    <p class="tx-12 text-muted">Income</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">attach_money</i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--info">
+                  <div class="card-inner">
+                    <h5 class="card-title">Oylik daromad:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ monthly_income|intcomma }} so`m</h5>
+                    <p class="tx-12 text-muted">{{ month }}</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">trending_up</i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--primary">
+                 <a href="{% url 'order_types' %}" style="color: black;">
+                   <div class="card-inner">
+                    <h5 class="card-title">Buyurtma turlari:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ order_type|intcomma }} ta</h5>
+                    <p class="tx-12 text-muted">Income</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">view_carousel</i>
+                    </div>
+                  </div></a>
+                </div>
+              </div>
+              
+              <!-- Settings -->
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--info">
+                 <a href="{% url 'settings' %}" style="color: black;">
+                  <div class="card-inner">
+                    <h5 class="card-title">Settings:</h5>
+                    <h5 class="font-weight-light pb-2 mb-1 border-bottom">{{ settings.web_app }}</h5>
+                    <p class="tx-12 text-muted">Active: {{ settings.is_active }}</p>
+                    <div class="card-icon-wrapper">
+                      <i class="material-icons">settings</i>
+                    </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+              
+
+
+{% endblock %}
+

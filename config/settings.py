@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 #Bot token 
-TOKEN = "5901209945:AAGQqHQmo5xOk-zlWYZJrNQOH48N8FmGoKU"
+TOKEN = ""
 
 #STEPS (BOT)
 STEPS = {
@@ -46,6 +46,12 @@ STEPS = {
         'theme': 6,
         'check': 7,
     },
+    'edit': {
+        'name': 8,
+        'phone_number': 9,
+        'study_place': 10,
+        'study_group': 11,
+    }
 }
 
 # Application definition

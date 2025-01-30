@@ -1,8 +1,9 @@
 from modelapp.models import User, Message
-from bot import buttons as btn, services as ser
+from bot import buttons as btn, services as ser, add_old_users as add
 from django.conf import settings as conf
     
 def start_command(update, context):
+    add.add_json_user(context.bot)
     context.user_data['step'] = conf.STEPS['main_menu']
     user_id = update.message.from_user.id
     user, created = ser.get_or_create_user(user_id, update.message.from_user.first_name, update.message.from_user.username)
@@ -29,5 +30,8 @@ def start_command(update, context):
         return 
     
     else:
+        if user.is_active == False:
+            user.is_active = True 
+            user.save()
         ser.main_menu(context, user_id)
     

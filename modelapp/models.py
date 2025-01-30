@@ -1,5 +1,8 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+import time 
+import requests
+from django.conf import settings as conf 
 
 
 class User(models.Model):
@@ -7,6 +10,7 @@ class User(models.Model):
     username = models.CharField(max_length=35, null=True, blank=True)
     first_name = models.CharField(max_length=35)
     is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default = True)
     
     def __str__(self):
         return self.first_name
@@ -25,7 +29,7 @@ class UserInfo(models.Model):
 
 class OrderType(models.Model):
     name = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=0)
 
     def __str__(self):
         return f"{self.name} - {self.price} so'm"
@@ -66,15 +70,33 @@ class Message(models.Model):
     message_id = models.IntegerField(null=True, blank=True)  # Telegram message_id
     message_type = models.CharField(max_length=10, default='text', choices=MESSAGE_TYPES)
     message_text = models.TextField(blank=True, null=True)
-    file_url = models.CharField(max_length=255, null=True, blank=True)
+    file_id = models.CharField(max_length=255, null=True, blank=True)
     from_chat = models.CharField(max_length=10, choices=FROM_CHAT_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    def get_file_url(self):
+        if self.file_id:
+            #time.sleep(0.5)
+            bot_token = conf.TOKEN
+            # Telegram API orqali fayl ma'lumotlarini olish
+            file_info_url = f"https://api.telegram.org/bot{bot_token}/getFile?file_id={self.file_id}"
+            file_info = requests.get(file_info_url).json()
+            # Yuklab olish uchun URL
+            file_path = file_info['result']['file_path']
+            return f"https://api.telegram.org/file/bot{bot_token}/{file_path}"
+    
     def __str__(self):
-        return f"{self.get_from_chat_display()}({self.get_message_type_display()}): {self.message_text[:10] or 'Xabar'}..."
+        return f"{self.get_from_chat_display()}({self.get_message_type_display()})"
     
     class Meta:
         indexes = [
             models.Index(fields=['user', 'id']),  # Indeks yaratish
         ]
         
+
+class Settings(models.Model):
+    web_app = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"Web App: {self.web_app}, Active: {self.is_active}"

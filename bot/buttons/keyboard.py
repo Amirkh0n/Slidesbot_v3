@@ -2,12 +2,16 @@ from telegram import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from modelapp.models import OrderType 
 
 
-main_menu = ReplyKeyboardMarkup([
-    [
-        KeyboardButton(text="Buyurtma"), 
-        KeyboardButton(text="Ma'lumotlarim")
+def main_menu(is_admin = False):
+    button = [
+        [
+            KeyboardButton(text="Buyurtma"), 
+            KeyboardButton(text="Ma'lumotlarim")
+        ]
     ]
-], resize_keyboard=True)
+    if is_admin == True: 
+        button.append([KeyboardButton(text="Admin panel 🔐")])
+    return ReplyKeyboardMarkup(button, resize_keyboard=True)
 
 share_contact = ReplyKeyboardMarkup([
     [KeyboardButton(text='Ulashish 📞', request_contact=True)]
@@ -22,4 +26,4 @@ def orders():
         [buttons[i: i+2] for i in range(0, len(buttons), 2)]+[[KeyboardButton(text="Orqaga 🔙")]],
         resize_keyboard = True 
     )
-    
+     

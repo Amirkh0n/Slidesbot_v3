@@ -25,8 +25,8 @@ def handle_messages(update, context):
             button = btn.orders()
         )
     
-    elif message == 'Ma\'lumotlarim':
-        pass
+    elif message == "Ma'lumotlarim":
+        ser.send_user_info(context, user_id)
     
     elif message in [order.name for order in OrderType.objects.all()]:
         order_type = OrderType.objects.get(name = message)
@@ -40,7 +40,7 @@ def handle_messages(update, context):
         )
         
     elif message == "Orqaga 🔙":
-        pass
+        ser.main_menu(context, user_id)
     
     elif step == conf.STEPS['order']['subject']:
         order = context.user_data.get('order')
@@ -58,24 +58,27 @@ def handle_messages(update, context):
         order.theme = message
         order.status = 'in_progress'
         order.save()
-        context.user_data['step'] = conf.STEPS['order']['theme']
+        context.user_data['step'] = conf.STEPS['order']['check']
         ser.send_message(
             context = context, 
             chat_id = user_id, 
             text = f"Buyurtmangizni tayyorlashimiz uchun quyidagi karta raqamiga {order.order_type.price : ,} so'm to'lov qilib, chekini screenshot qilib rasm ko'rinishida jo'natishingiz kerak bo'ladi!!!\n"
                       "<pre>9860 1601 2673 3114</pre>(Fazliddin Turg’unboev)\n\n"
-                      "Buyurtmani bekor qilish uchun👉 /start 👈ni bosing!"
+                      "Buyurtmani bekor qilish uchun👉 /cancel 👈ni bosing!"
         )
     
-    elif step == conf.STEPS['regist']['name']:
+    elif step == conf.STEPS['regist']['name'] or step == conf.STEPS['edit']['name']:
         bot.messages.register.regist_name(update, context)
     
-    elif step == conf.STEPS['regist']['study_place']:
+    elif step == conf.STEPS['regist']['study_place'] or step == conf.STEPS['edit']['study_place']:
         bot.messages.register.regist_study_place(update, context)
     
-    elif step == conf.STEPS['regist']['study_group']:
+    elif step == conf.STEPS['regist']['study_group'] or step == conf.STEPS['edit']['study_group']:
         bot.messages.register.regist_study_group(update, context)
     
+    elif message == "Admin panel 🔐" and user.is_admin:
+        ser.send_admin_panel(context, user_id)
+
 
 def contact_handler(update, context):
     user_id = update.message.from_user.id
@@ -87,8 +90,11 @@ def contact_handler(update, context):
         message_text = number, 
         from_chat = "user"
     )
-    if context.user_data.get('step', 0) == conf.STEPS['regist']['phone_number']:
+    if context.user_data.get('step', 0) == conf.STEPS['regist']['phone_number'] or context.user_data.get('step', 0) == conf.STEPS['edit']['phone_number']:
         user = User.objects.get(user_id = user_id)
         user.info.phone_number = number
         user.info.save()
+        if context.user_data.get('step', 0) == conf.STEPS['edit']['phone_number']:
+            ser.send_user_info(context, user_id)
+            return
         ser.main_menu(context, user_id)

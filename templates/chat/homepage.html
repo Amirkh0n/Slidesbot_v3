@@ -6,7 +6,7 @@
 {% block content %}
    <div class="chat-area">
     {% for user in users %}
-    <div class="msg online" onclick="window.location.href='users/{{ user.user_id }}'">
+    <div class="msg online" onclick="window.location.href='{% url 'chat' user_id=user.user_id %}'">
         <img class="msg-profile" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" alt="User profile" />
         <div class="msg-detail">
             <div class="msg-username">{{ user.first_name }}</div>

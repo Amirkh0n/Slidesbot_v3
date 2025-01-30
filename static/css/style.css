@@ -394,6 +394,7 @@ html, body {
 }
 .chat-area-main {
   flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .chat-msg-img {

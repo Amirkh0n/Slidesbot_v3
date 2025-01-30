@@ -1,0 +1,66 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+        <div class="mdc-layout-grid">
+            <div class="mdc-layout-grid__inner">
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+                <div class="mdc-card info-card info-card--success">
+                  <form method="post" action="">
+                      {% csrf_token %}
+                  <div class="card-inner">
+                   <h5 class="font-weight-light pb-2 mb-1 border-bottom"> 
+                    <input type="hidden" name="create" value="1">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="number" name="price" placeholder="Price" required>
+                   </h5>
+                    <p class="tx-12 text-muted">Yangi Buyurtma turi yaratish</p>
+                    <button type="submit" class="card-icon-wrapper">
+                      <i class="material-icons">add_circle_outline</i>
+                    </button>
+                  </div>
+                 </form>
+                </div>
+              </div>
+             </div>
+            </div>
+
+
+           
+ <div class="mdc-layout-grid">
+    <div class="mdc-layout-grid__inner">
+        {% for order in order_types %}
+        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-tablet">
+            <div class="mdc-card info-card info-card--danger">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="card-inner">
+                        <h5 class="font-weight-light pb-2 mb-1 border-bottom">
+                            <input type="hidden" name="update" value="1">
+                            <input type="hidden" name="id" value="{{ order.id }}">
+                            <input type="text" name="name" value="{{ order.name }}" required>
+                            <input type="number" name="price" value="{{ order.price }}" required>
+                        </h5>
+                        <button class="card-icon-wrapper" type="submit">
+                            <i class="material-icons">done_all</i> <!-- Update -->
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Delete Form -->
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" value="{{ order.id }}">
+                    <button type="submit" style="background: red;" onclick="return confirm('{{ order.name }}`ni o`chirmoqchimisiz?')">
+                      <!--  <p class="tx-12 text-muted">Delete</p> --> 
+                      <i class="material-icons" >highlight_off</i> 
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>              
+
+{% endblock %}

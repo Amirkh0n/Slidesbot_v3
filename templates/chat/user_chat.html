@@ -13,60 +13,69 @@
     </div>
     <div class="chat-area-main">
         {% for message in messages %}
-        {% if message.from_chat == 'user' %}
+      
+          {% if message.from_chat == 'user' %}
         <div class="chat-msg">
-            <div class="chat-msg-profile">
-                <div class="chat-msg-date">{{ message.created_at }}</div>
-            </div>
-            <div class="chat-msg-content">
-                <div class="chat-msg-text">{{ message.message_text }}</div>
-            </div>
-        </div>
+          
         {% elif message.from_chat == 'bot' %}
         <div class="chat-msg owner">
+          {% endif %}
+          
             <div class="chat-msg-profile">
-                <div class="chat-msg-date">{{ message.created_at }}</div>
+                <div class="chat-msg-date">
+                  {{ message.created_at }}
+                </div>
             </div>
             <div class="chat-msg-content">
+              {% if message.message_type == 'photo' %}
+                <div class="chat-msg-text">
+                    <img src="{{ message.get_file_url }}" loading="lazy"/><br>
+               {% if message.message_text %}
+                  {{ message.message_text }}
+                {% endif %}
+                </div>
+               
+              {% elif message.message_type == 'file' %}
+                  <div class="chat-msg-text"><h3><a href="{{ message.get_file_url }}"> Document</a></h3><br>   
+                {% if message.message_text %}
+                  {{ message.message_text }}
+                {% endif %}
+                </div>
+               
+              {% else %}
                 <div class="chat-msg-text">{{ message.message_text }}</div>
+              {% endif %}
             </div>
         </div>
-        {% endif %}
+      
         {% endfor %}
     </div>
     <div class="chat-area-footer">
-        <!-- Video icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video">
-            <path d="M23 7l-7 5 7 5V7z" />
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
-        </svg>
-
+       
         <!-- Image icon -->
+      <div id="imageInputDiv" style="width: 35px; height: 20px;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image">
             <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
             <path d="M21 15l-5-5L5 21" />
         </svg>
-
-        <!-- Add more button -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 8v8M8 12h8" />
-        </svg>
-
+      </div>
+      
         <!-- Attach button -->
+      <div id="fileInputDiv" style="width: 35px; height: 20px;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip">
             <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
         </svg>
-
+        </div>
+      <input class="file-imput" id="fileInput" type="file" style="display: none;"/>
+     <input class="image-imput" id="imageInput" type="file" accept="image/*" style="display: none;"/>
+     
         <!-- Textarea for message input -->
-        <textarea id="message-textarea" placeholder="Xabar yozing..." minlength="2"></textarea>
+        <textarea id="message-textarea" placeholder="Xabar yozing..." minlength="2" style="width: 85%;"></textarea>
 
         <!-- Send message button -->
-        <div id="send-message-btn" class="send-message-btn" data-user-id="{{ user.user_id }}">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send">
-                <path d="M22 2L12 12M12 12l-4 6V4l4 6V2" />
-            </svg>
+        <div id="send-message-btn" class="send-message-btn" data-user-id="{{ user.user_id }}" data-len_msg="{{ len_msg }}">
+          <img class="buttons" style="width: 30px; height: 30px" src="https://avatars.mds.yandex.net/i?id=83e31a6a426880ad24116139518787f485939b708b4a4652-10779417-images-thumbs&n=13"
         </div>
     </div>
 </div>
