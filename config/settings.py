@@ -25,14 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$6lmj8j516bdv&$=xhu&h%hj6l#$4ydfaoqo$hi^f-i6^zzy-$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 #Bot token 
-TOKEN = "5769873334:AAGw7FA6vmxhcwvjPboDFHIaC1CjF99jGlw"
+TOKEN = ""
 
-Web = "https://amirxon521.pythonanywhere.com"
 
 #STEPS (BOT)
 STEPS = {
